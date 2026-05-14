@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "301800921832",
+    "project_id": "ideief",
+    "storage_bucket": "ideief.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301800921832:android:664d3119d16357c575075d",
+        "android_client_info": {
+          "package_name": "com.ideief.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjv3nd9OL9Z9VsEAMcciDPQAilP2B1rtU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
