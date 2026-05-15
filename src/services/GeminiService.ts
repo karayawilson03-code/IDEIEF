@@ -9,7 +9,7 @@ const PROMPT = `You are an expert plant pathologist specialising in
 Kenyan potato diseases. Analyse this potato leaf image and respond
 ONLY with a JSON object in this exact format, no markdown:
 {
-  "disease": "Late Blight" or "Early Blight" or "Bacterial Wilt" or "Healthy",
+  "disease": "Late Blight" or "Early Blight" or "Bacterial Wilt" or "Common Scab" or "Black Scurf" or "Soft Rot" or "Healthy",,
   "confidence": 0.0-1.0,
   "severity": "High" or "Medium" or "Low",
   "recommendation_en": "specific management advice in English",

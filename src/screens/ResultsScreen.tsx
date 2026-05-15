@@ -11,6 +11,9 @@ const DISEASE_COLORS: Record<string, string> = {
   'Late Blight': '#C62828',
   'Early Blight': '#E65100',
   'Bacterial Wilt': '#AD1457',
+  'Common Scab': '#6A1B9A',
+  'Black Scurf': '#212121',
+  'Soft Rot': '#F57F17',
   'Healthy': '#2E7D32',
 };
 
@@ -131,11 +134,28 @@ export default function ResultsScreen({ route, navigation }) {
         </Text>
       </View>
 
+      <View style={styles.diseaseInfo}>
+        <Text style={styles.diseaseInfoTitle}>About {result.disease}</Text>
+        <Text style={styles.diseaseInfoText}>
+          {result.disease === 'Late Blight' && 'Caused by Phytophthora infestans. Spreads rapidly in cool humid conditions.'}
+          {result.disease === 'Early Blight' && 'Caused by Alternaria solani. Appears as dark concentric ring lesions.'}
+          {result.disease === 'Bacterial Wilt' && 'Caused by Ralstonia solanacearum. No chemical cure available.'}
+          {result.disease === 'Common Scab' && 'Caused by Streptomyces scabies. Affects tuber skin quality.'}
+          {result.disease === 'Black Scurf' && 'Caused by Rhizoctonia solani. Affects stems and tubers.'}
+          {result.disease === 'Soft Rot' && 'Caused by Pectobacterium carotovorum. Causes tuber decay.'}
+          {result.disease === 'Healthy' && 'No disease detected. Continue monitoring your crop weekly.'}
+        </Text>
+      </View>
+
       <View style={styles.actions}>
-        <TouchableOpacity style={styles.scanAgainBtn} onPress={() => navigation.navigate('Scan')}>
+        <TouchableOpacity
+          style={styles.scanAgainBtn}
+          onPress={() => navigation.navigate('Scan')}>
           <Text style={styles.btnText}>Scan Another Leaf</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.historyBtn} onPress={() => navigation.navigate('History')}>
+        <TouchableOpacity
+          style={styles.historyBtn}
+          onPress={() => navigation.navigate('History')}>
           <Text style={styles.btnText}>View History</Text>
         </TouchableOpacity>
       </View>
@@ -160,6 +180,9 @@ const styles = StyleSheet.create({
   map: { height: 200, margin: 16, borderRadius: 12, overflow: 'hidden' },
   metaCard: { margin: 16, backgroundColor: '#fff', borderRadius: 12, padding: 16, elevation: 2, gap: 6 },
   metaText: { fontSize: 13, color: '#666' },
+  diseaseInfo: { margin: 16, backgroundColor: '#F3E5F5', borderRadius: 12, padding: 16 },
+  diseaseInfoTitle: { fontSize: 15, fontWeight: 'bold', color: '#4A148C', marginBottom: 8 },
+  diseaseInfoText: { fontSize: 14, color: '#555', lineHeight: 22 },
   actions: { padding: 16, gap: 12, marginBottom: 32 },
   scanAgainBtn: { backgroundColor: '#2E7D32', padding: 16, borderRadius: 12, alignItems: 'center' },
   historyBtn: { backgroundColor: '#1565C0', padding: 16, borderRadius: 12, alignItems: 'center' },

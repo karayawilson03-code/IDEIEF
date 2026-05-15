@@ -7,11 +7,26 @@ const DISEASE_COLORS: Record<string, string> = {
   'Late Blight': '#C62828',
   'Early Blight': '#E65100',
   'Bacterial Wilt': '#AD1457',
+  'Common Scab': '#6A1B9A',
+  'Black Scurf': '#212121',
+  'Soft Rot': '#F57F17',
   'Healthy': '#2E7D32',
 };
 
+interface Report {
+  id: string;
+  predictedDisease: string;
+  confidenceScore: number;
+  timestamp: any;
+  severity: string;
+  gpsLatitude: number;
+  gpsLongitude: number;
+  inferenceSource: string;
+  [key: string]: any;
+}
+
 export default function HistoryScreen() {
-  const [reports, setReports] = useState([]);
+  const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,7 +41,7 @@ export default function HistoryScreen() {
         orderBy('timestamp', 'desc')
       );
       const snap = await getDocs(q);
-      setReports(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+      setReports(snap.docs.map(d => ({ id: d.id, ...d.data() })) as Report[]);
     } catch (e) {
       console.error(e);
     }
@@ -46,12 +61,24 @@ export default function HistoryScreen() {
             <View style={[styles.card, {
               borderLeftColor: DISEASE_COLORS[item.predictedDisease] || '#999'
             }]}>
-              <Text style={styles.disease}>{item.predictedDisease}</Text>
+              <View style={styles.cardHeader}>
+                <Text style={styles.disease}>{item.predictedDisease}</Text>
+                <View style={[styles.badge, {
+                  backgroundColor: DISEASE_COLORS[item.predictedDisease] || '#999'
+                }]}>
+                  <Text style={styles.badgeText}>
+                    {(item.confidenceScore * 100).toFixed(0)}%
+                  </Text>
+                </View>
+              </View>
               <Text style={styles.meta}>
-                {item.timestamp?.toDate?.()?.toLocaleDateString() ?? 'Unknown date'} · {(item.confidenceScore * 100).toFixed(0)}% confidence
+                {item.timestamp?.toDate?.()?.toLocaleDateString() ?? 'Unknown date'} · {item.severity} severity
               </Text>
               <Text style={styles.gps}>
                 📍 {item.gpsLatitude?.toFixed(4)}, {item.gpsLongitude?.toFixed(4)}
+              </Text>
+              <Text style={styles.source}>
+                {item.inferenceSource === 'gemini' ? '🤖 Gemini Vision AI' : '📱 On-device AI'}
               </Text>
             </View>
           )}
@@ -73,8 +100,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9FBE7', borderRadius: 10,
     padding: 16, marginBottom: 12, borderLeftWidth: 5, elevation: 1,
   },
+  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   disease: { fontSize: 16, fontWeight: 'bold', color: '#333' },
+  badge: { borderRadius: 12, paddingHorizontal: 8, paddingVertical: 3 },
+  badgeText: { color: '#fff', fontSize: 12, fontWeight: 'bold' },
   meta: { fontSize: 13, color: '#666', marginTop: 4 },
   gps: { fontSize: 12, color: '#999', marginTop: 4 },
+  source: { fontSize: 12, color: '#888', marginTop: 4 },
   empty: { textAlign: 'center', color: '#aaa', marginTop: 48, fontSize: 15 },
 });
