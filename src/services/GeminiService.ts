@@ -1,9 +1,9 @@
-import * as FileSystem from 'expo-file-system';
+const GEMINI_API_KEY = 'AIzaSyDtShWqfdMhw5DuHjojQh9rgrTT1MH-JnU';
 
 const GEMINI_URL =
   'https://generativelanguage.googleapis.com/v1beta/models/' +
-  'gemini-1.5-flash:generateContent?key=' +
-  process.env.GEMINI_API_KEY;
+  'gemini-1.5-flash-latest:generateContent?key=' +
+  GEMINI_API_KEY;
 
 const PROMPT = `You are an expert plant pathologist specialising in
 Kenyan potato diseases. Analyse this potato leaf image and respond
@@ -17,17 +17,13 @@ ONLY with a JSON object in this exact format, no markdown:
 }
 Focus on visible lesion colour, shape, and pattern.`;
 
-export async function classifyWithGemini(imageUri: string): Promise<{
+export async function classifyWithGemini(base64: string): Promise<{
   disease: string;
   confidence: number;
   severity: string;
   recommendation: { en: string; sw: string };
   source: 'gemini';
 }> {
-  const base64 = await FileSystem.readAsStringAsync(imageUri, {
-    encoding: FileSystem.EncodingType.Base64,
-  });
-
   const body = {
     contents: [{
       parts: [
@@ -53,7 +49,8 @@ export async function classifyWithGemini(imageUri: string): Promise<{
   });
 
   if (!response.ok) {
-    throw new Error(`Gemini API error: ${response.status}`);
+    const errorText = await response.text();
+    throw new Error(`Gemini API error ${response.status}: ${errorText}`);
   }
 
   const data = await response.json();
