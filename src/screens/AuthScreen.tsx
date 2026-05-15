@@ -1,38 +1,25 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { PhoneAuthProvider, signInWithCredential } from 'firebase/auth';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
+import { signInAnonymously } from 'firebase/auth';
 import { auth } from '../config/firebase';
 
 export default function AuthScreen({ navigation }) {
   const [phone, setPhone] = useState('');
-  const [otp, setOtp] = useState('');
-  const [verificationId, setVerificationId] = useState('');
-  const [step, setStep] = useState<'phone' | 'otp'>('phone');
   const [loading, setLoading] = useState(false);
 
-  const sendOTP = async () => {
-    setLoading(true);
-    try {
-      const provider = new PhoneAuthProvider(auth);
-      const vid = await provider.verifyPhoneNumber(
-        phone.startsWith('+') ? phone : `+254${phone}`,
-      );
-      setVerificationId(vid);
-      setStep('otp');
-    } catch (e) {
-      console.error('OTP error:', e);
+  const handleContinue = async () => {
+    if (!phone || phone.length < 9) {
+      Alert.alert('Error', 'Enter a valid phone number');
+      return;
     }
-    setLoading(false);
-  };
 
-  const verifyOTP = async () => {
     setLoading(true);
     try {
-      const credential = PhoneAuthProvider.credential(verificationId, otp);
-      await signInWithCredential(auth, credential);
+      await signInAnonymously(auth);
       navigation.replace('FarmProfile');
-    } catch (e) {
-      console.error('Verify error:', e);
+    } catch (error) {
+      console.error('Auth error:', error);
+      Alert.alert('Error', 'Could not sign in. Try again.');
     }
     setLoading(false);
   };
@@ -41,40 +28,22 @@ export default function AuthScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>IDEIEF</Text>
       <Text style={styles.subtitle}>Potato Disease Detector</Text>
-      {step === 'phone' ? (
-        <>
-          <Text style={styles.label}>Enter your phone number:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="0712 345 678"
-            keyboardType="phone-pad"
-            value={phone}
-            onChangeText={setPhone}
-          />
-          <TouchableOpacity style={styles.button} onPress={sendOTP}>
-            <Text style={styles.buttonText}>
-              {loading ? 'Sending...' : 'Send OTP'}
-            </Text>
-          </TouchableOpacity>
-        </>
-      ) : (
-        <>
-          <Text style={styles.label}>Enter the 6-digit OTP:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="123456"
-            keyboardType="number-pad"
-            value={otp}
-            onChangeText={setOtp}
-            maxLength={6}
-          />
-          <TouchableOpacity style={styles.button} onPress={verifyOTP}>
-            <Text style={styles.buttonText}>
-              {loading ? 'Verifying...' : 'Verify OTP'}
-            </Text>
-          </TouchableOpacity>
-        </>
-      )}
+      <Text style={styles.label}>Enter your phone number:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="0712 345 678"
+        keyboardType="phone-pad"
+        value={phone}
+        onChangeText={setPhone}
+      />
+      <TouchableOpacity style={styles.button} onPress={handleContinue}>
+        <Text style={styles.buttonText}>
+          {loading ? 'Please wait...' : 'Continue'}
+        </Text>
+      </TouchableOpacity>
+      <Text style={styles.note}>
+        OTP login will be enabled in the final build
+      </Text>
     </View>
   );
 }
@@ -87,4 +56,5 @@ const styles = StyleSheet.create({
   input: { borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 12, marginBottom: 16, fontSize: 16, backgroundColor: '#fff' },
   button: { backgroundColor: '#2E7D32', padding: 16, borderRadius: 10, alignItems: 'center' },
   buttonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
+  note: { textAlign: 'center', color: '#888', fontSize: 12, marginTop: 16 },
 });
