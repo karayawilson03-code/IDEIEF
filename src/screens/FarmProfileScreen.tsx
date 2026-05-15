@@ -3,7 +3,11 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'reac
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
 
-export default function FarmProfileScreen({ navigation }) {
+type FarmProfileScreenProps = {
+  navigation: any;
+};
+
+export default function FarmProfileScreen({ navigation }: FarmProfileScreenProps) {
   const [county, setCounty] = useState('');
   const [subCounty, setSubCounty] = useState('');
   const [variety, setVariety] = useState('');
@@ -15,6 +19,10 @@ export default function FarmProfileScreen({ navigation }) {
     }
     try {
       const user = auth.currentUser;
+      if (!user) {
+        Alert.alert('Error', 'No authenticated user found. Please sign in again.');
+        return;
+      }
       await setDoc(doc(db, 'users', user.uid), {
         phone: user.phoneNumber,
         county,
@@ -23,7 +31,7 @@ export default function FarmProfileScreen({ navigation }) {
         role: 'farmer',
         createdAt: new Date(),
       });
-      navigation.replace('Home');
+      navigation.navigate('Home');
     } catch (error) {
       Alert.alert('Error', 'Could not save profile. Try again.');
     }
