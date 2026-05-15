@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { onAuthStateChanged } from 'firebase/auth';
+import { TouchableOpacity, Text } from 'react-native';
 import { auth } from '../config/firebase';
 
 import AuthScreen from '../screens/AuthScreen';
@@ -10,6 +11,7 @@ import HomeScreen from '../screens/HomeScreen';
 import ScanScreen from '../screens/ScanScreen';
 import ResultsScreen from '../screens/ResultsScreen';
 import HistoryScreen from '../screens/HistoryScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 
 const Stack = createStackNavigator();
 
@@ -45,7 +47,16 @@ export default function AppNavigator() {
             <Stack.Screen
               name="Home"
               component={HomeScreen}
-              options={{ title: 'IDEIEF' }}
+              options={({ navigation }) => ({
+                title: 'IDEIEF',
+                headerRight: () => (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Profile')}
+                    style={{ marginRight: 16 }}>
+                    <Text style={{ fontSize: 24 }}>👤</Text>
+                  </TouchableOpacity>
+                ),
+              })}
             />
             <Stack.Screen
               name="FarmProfile"
@@ -66,6 +77,11 @@ export default function AppNavigator() {
               name="History"
               component={HistoryScreen}
               options={{ title: 'Scan History' }}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={ProfileScreen}
+              options={{ title: 'My Profile' }}
             />
           </>
         )}
