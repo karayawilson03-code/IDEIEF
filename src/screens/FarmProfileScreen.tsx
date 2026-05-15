@@ -25,7 +25,6 @@ export default function FarmProfileScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>Farm Profile</Text>
       <Text style={styles.subtitle}>Tell us about your farm</Text>
-
       <Text style={styles.label}>County</Text>
       <TextInput
         style={styles.input}
@@ -33,7 +32,6 @@ export default function FarmProfileScreen({ navigation }) {
         value={county}
         onChangeText={setCounty}
       />
-
       <Text style={styles.label}>Sub-County</Text>
       <TextInput
         style={styles.input}
@@ -41,7 +39,6 @@ export default function FarmProfileScreen({ navigation }) {
         value={subCounty}
         onChangeText={setSubCounty}
       />
-
       <Text style={styles.label}>Potato Variety</Text>
       <TextInput
         style={styles.input}
@@ -49,9 +46,8 @@ export default function FarmProfileScreen({ navigation }) {
         value={variety}
         onChangeText={setVariety}
       />
-
       <TouchableOpacity style={styles.button} onPress={saveProfile}>
-        <Text style={styles.buttonText}>Save & Continue</Text>
+        <Text style={styles.buttonText}>Save and Continue</Text>
       </TouchableOpacity>
     </View>
   );
@@ -61,4 +57,8 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, backgroundColor: '#F1F8E9', justifyContent: 'center' },
   title: { fontSize: 28, fontWeight: 'bold', color: '#1B5E20', marginBottom: 6 },
   subtitle: { fontSize: 15, color: '#33691E', marginBottom: 32 },
-  label: { fontSize: 14, color: '#333',
+  label: { fontSize: 14, color: '#333', marginBottom: 6 },
+  input: { borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 12, marginBottom: 20, fontSize: 15, backgroundColor: '#fff' },
+  button: { backgroundColor: '#2E7D32', padding: 16, borderRadius: 10, alignItems: 'center', marginTop: 8 },
+  buttonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
+});
