@@ -68,13 +68,9 @@ export default function HomeScreen({ navigation }) {
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
 
-      {/* Header */}
-      <View style={styles.header}>
-        <View>
-          <Text style={styles.greeting}>{greeting}</Text>
-          <Text style={styles.appName}>IDEIEF</Text>
-          <Text style={styles.subtitle}>Potato Disease Detector</Text>
-        </View>
+      {/* Greeting Banner */}
+      <View style={styles.greetingBanner}>
+        <Text style={styles.greeting}>{greeting}</Text>
         <View style={styles.aiBadge}>
           <Text style={styles.aiBadgeText}>🤖 AI</Text>
         </View>
@@ -109,9 +105,9 @@ export default function HomeScreen({ navigation }) {
         ) : (
           <>
             <View style={styles.statCard}>
+              <Text style={styles.statEmoji}>📊</Text>
               <Text style={styles.statNumber}>{recentCount}</Text>
               <Text style={styles.statLabel}>Recent Scans</Text>
-              <Text style={styles.statEmoji}>📊</Text>
             </View>
             <View style={[styles.statCard, { borderTopColor: lastDiseaseColor, borderTopWidth: 3 }]}>
               <Text style={styles.statEmoji}>{lastDiseaseIcon}</Text>
@@ -144,9 +140,11 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.actionIcon}>📸</Text>
           <Text style={styles.actionText}>Quick Scan</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.actionCard}>
-          <Text style={styles.actionIcon}>📍</Text>
-          <Text style={styles.actionText}>Disease Map</Text>
+        <TouchableOpacity
+          style={styles.actionCard}
+          onPress={() => navigation.navigate('Profile')}>
+          <Text style={styles.actionIcon}>👤</Text>
+          <Text style={styles.actionText}>My Profile</Text>
         </TouchableOpacity>
       </View>
 
@@ -157,9 +155,7 @@ export default function HomeScreen({ navigation }) {
       </View>
 
       {/* Footer */}
-      <Text style={styles.footer}>
-        Powered by Gemini Vision AI 
-      </Text>
+      <Text style={styles.footer}>Powered by Gemini Vision AI</Text>
 
     </ScrollView>
   );
@@ -167,14 +163,12 @@ export default function HomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F1F8E9' },
-  header: {
+  greetingBanner: {
     flexDirection: 'row', justifyContent: 'space-between',
-    alignItems: 'center', padding: 20, paddingTop: 50,
+    alignItems: 'center', padding: 16,
     backgroundColor: '#1B5E20',
   },
-  greeting: { fontSize: 13, color: '#A5D6A7', marginBottom: 2 },
-  appName: { fontSize: 32, fontWeight: '900', color: '#FFFFFF', letterSpacing: 3 },
-  subtitle: { fontSize: 13, color: '#C8E6C9', marginTop: 2 },
+  greeting: { fontSize: 14, color: '#A5D6A7', fontWeight: '500' },
   aiBadge: {
     backgroundColor: '#F9A825', borderRadius: 20,
     paddingHorizontal: 12, paddingVertical: 6,

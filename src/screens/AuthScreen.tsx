@@ -16,7 +16,7 @@ export default function AuthScreen({ navigation }) {
     setLoading(true);
     try {
       await signInAnonymously(auth);
-      navigation.replace('FarmProfile');
+      navigation.replace('Home');
     } catch (error) {
       console.error('Auth error:', error);
       Alert.alert('Error', 'Could not sign in. Try again.');

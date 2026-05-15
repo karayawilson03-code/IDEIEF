@@ -34,7 +34,7 @@ export default function AppNavigator() {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
-          headerStyle: { backgroundColor: '#2E7D32' },
+          headerStyle: { backgroundColor: '#1B5E20' },
           headerTintColor: '#fff',
           headerTitleStyle: { fontWeight: 'bold' },
         }}>
@@ -57,7 +57,15 @@ export default function AppNavigator() {
               name="Home"
               component={HomeScreen}
               options={({ navigation }) => ({
-                headerShown: false,
+                headerShown: true,
+                title: 'IDEIEF',
+                headerRight: () => (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Profile')}
+                    style={{ marginRight: 16 }}>
+                    <Text style={{ fontSize: 24 }}>👤</Text>
+                  </TouchableOpacity>
+                ),
               })}
             />
             <Stack.Screen

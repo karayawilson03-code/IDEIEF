@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
 
@@ -9,16 +9,24 @@ export default function FarmProfileScreen({ navigation }) {
   const [variety, setVariety] = useState('');
 
   const saveProfile = async () => {
-    const user = auth.currentUser;
-    await setDoc(doc(db, 'users', user.uid), {
-      phone: user.phoneNumber,
-      county,
-      subCounty,
-      primaryVariety: variety,
-      role: 'farmer',
-      createdAt: new Date(),
-    });
-    navigation.replace('Home');
+    if (!county || !subCounty || !variety) {
+      Alert.alert('Please fill in all fields');
+      return;
+    }
+    try {
+      const user = auth.currentUser;
+      await setDoc(doc(db, 'users', user.uid), {
+        phone: user.phoneNumber,
+        county,
+        subCounty,
+        primaryVariety: variety,
+        role: 'farmer',
+        createdAt: new Date(),
+      });
+      navigation.replace('Home');
+    } catch (error) {
+      Alert.alert('Error', 'Could not save profile. Try again.');
+    }
   };
 
   return (
