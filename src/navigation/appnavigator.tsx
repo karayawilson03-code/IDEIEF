@@ -12,6 +12,8 @@ import ScanScreen from '../screens/ScanScreen';
 import ResultsScreen from '../screens/ResultsScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import OfficerLoginScreen from '../screens/OfficerLoginScreen';
+import OfficerDashboardScreen from '../screens/OfficerDashboardScreen';
 
 const Stack = createStackNavigator();
 
@@ -37,25 +39,25 @@ export default function AppNavigator() {
           headerTitleStyle: { fontWeight: 'bold' },
         }}>
         {!user ? (
-          <Stack.Screen
-            name="Auth"
-            component={AuthScreen}
-            options={{ title: 'IDEIEF — Sign In' }}
-          />
+          <>
+            <Stack.Screen
+              name="Auth"
+              component={AuthScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="OfficerLogin"
+              component={OfficerLoginScreen}
+              options={{ title: 'Officer Login' }}
+            />
+          </>
         ) : (
           <>
             <Stack.Screen
               name="Home"
               component={HomeScreen}
               options={({ navigation }) => ({
-                title: 'IDEIEF',
-                headerRight: () => (
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('Profile')}
-                    style={{ marginRight: 16 }}>
-                    <Text style={{ fontSize: 24 }}>👤</Text>
-                  </TouchableOpacity>
-                ),
+                headerShown: false,
               })}
             />
             <Stack.Screen
@@ -66,7 +68,7 @@ export default function AppNavigator() {
             <Stack.Screen
               name="Scan"
               component={ScanScreen}
-              options={{ title: 'Scan Crop', headerShown: false }}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="Results"
@@ -82,6 +84,11 @@ export default function AppNavigator() {
               name="Profile"
               component={ProfileScreen}
               options={{ title: 'My Profile' }}
+            />
+            <Stack.Screen
+              name="OfficerDashboard"
+              component={OfficerDashboardScreen}
+              options={{ headerShown: false }}
             />
           </>
         )}
