@@ -4,10 +4,12 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  apiKey:"AIzaSyB7fyiKPxVQINgpp16_d__-cXthoHhunuM",
+  authDomain:"ideief.firebaseapp.com",
+  projectId:"ideief",
+  storageBucket:"ideief.firebasestorage.appspot.com",
+   messagingSenderId: "301800921832",
+  appId: "1:301800921832:web:787b9e1ab244851875075d",
 };
 
 const app = initializeApp(firebaseConfig);
